@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carte d'Identité Otaku - Naruto</title>
+  <title>Carte d'Identité Otaku - Formulaire Responsive</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     @keyframes pulse {
       0%, 100% {
@@ -39,7 +40,7 @@
     .kunai {
       width: 20px;
       height: 60px;
-      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 60"%3E%3Cpath fill="%23FFF" d="M10 0 L8 20 L4 22 L8 24 L10 60 L12 24 L16 22 L12 20 Z"%3E%3C/path%3E%3C/svg%3E');
+      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 60"%3E%3Cpath fill="%23FFF" d="M10 0 L8 20 L4 22 L8 24 L10 60 L12 24 L16 22 L12 20 Z"%3E%3C/path%3E');
       background-size: contain;
       background-repeat: no-repeat;
     }
@@ -61,9 +62,9 @@
 </head>
 <body class="bg-gray-100 flex flex-col items-center min-h-screen py-4">
   <!-- Formulaire pour remplir les informations -->
-  <form id="formulaire" class="bg-white shadow-md rounded-lg p-4 w-[28rem] mb-6">
+  <form id="formulaire" class="bg-white shadow-md rounded-lg p-4 w-full max-w-lg mb-6">
     <h2 class="text-xl font-bold text-gray-700 mb-4">Remplissez votre carte d'identité Otaku</h2>
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
         <label for="nom" class="text-sm font-semibold">Nom :</label>
         <input type="text" id="nom" class="w-full p-2 border rounded-md" placeholder="Ex : Naruto Uzumaki">
@@ -101,7 +102,7 @@
   </form>
 
   <!-- Carte d'identité -->
-  <div class="bg-naruto text-white rounded-lg shadow-lg p-6 w-[30rem] h-[18rem] relative">
+  <div id="carte" class="bg-naruto text-white rounded-lg shadow-lg p-6 w-[30rem] h-[18rem] relative">
     <!-- Shurikens et kunais dans le fond -->
     <div class="shuriken shuriken-1"></div>
     <div class="shuriken shuriken-2"></div>
@@ -144,6 +145,11 @@
     </div>
   </div>
 
+  <!-- Bouton Télécharger -->
+  <button id="telecharger" class="mt-6 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600">
+    Télécharger la carte
+  </button>
+
   <script>
     document.getElementById("valider").addEventListener("click", () => {
       document.getElementById("nomAffiche").textContent = document.getElementById("nom").value || "Naruto Uzumaki";
@@ -164,6 +170,16 @@
         };
         reader.readAsDataURL(photoInput.files[0]);
       }
+    });
+
+    document.getElementById("telecharger").addEventListener("click", () => {
+      const carte = document.getElementById("carte");
+      html2canvas(carte).then((canvas) => {
+        const link = document.createElement("a");
+        link.download = "carte_otaku.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
     });
   </script>
 </body>
